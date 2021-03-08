@@ -117,11 +117,8 @@ class PagesController extends Controller
     return view('index', compact('greetings', 'barang_terdata', 'barang_tersedia', 'barang_dipinjam', 'cek_chart', 'get_tahun', 'charts', 'total_peminjam', 'persetujuan_dipinjam', 'data'));
 }
 
-    public function Tester(Request $request)
-    {
-      $data2 = $request->datetimes;
-      $data = substr($data2, 0, 9);
-      $data3 = substr($data2, 12, 21);
-      dd($data3);
+    public function notfound() 
+    { 
+      return view('errors.404'); 
     }
 }

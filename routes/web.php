@@ -19,6 +19,11 @@ Route::post('/login', 'LoginController@login');
 // Route::post('/register', 'LoginController@store');
 Route::get('/logout', 'LoginController@logout');
 
+// Route::any('{catchall}', 'PagesController@notfound')->where('catchall', '.*');
+   Route::fallback(function () {
+       return view('errors.404');
+   });
+
 Route::group(['middleware' => 'auth'], function() {
 	
 	//Supplier
