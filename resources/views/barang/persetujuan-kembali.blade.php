@@ -21,7 +21,6 @@
 								<th class="text-primary">#</th>
 								<th class="text-primary">Kode Barang</th>
 								<th class="text-primary">Nama Barang</th>
-								<th class="text-primary">Jumlah Barang Yang Dipinjam</th>
 								<th class="text-primary">Nama Peminjam</th>
 								<th class="text-primary">Status</th>
 								<th class="text-primary">Waktu Dipinjam</th>
@@ -34,10 +33,9 @@
 								<td>{{$loop->iteration}}</td>
 								<td>{{$data->kode_barang}}</td>
 								<td>{{$data->nama_barang}}</td>
-								<td>{{$data->jml_barang}}</td>
 								<td>{{$data->nama_peminjam}}</td>
-								<td><h3><span class="btn btn-warning">Menunggu Persetujuan</span></h3></td>
-								<td>{{$data->created_at}}</td>
+								<td><h3><span class="btn btn-warning text-white">Menunggu Persetujuan</span></h3></td>
+								<td>{{\Carbon\Carbon::parse($data->created_at)->locale('id_ID')->isoFormat('D MMMM Y')}}</td>
 								<td>
 									<button class="btn btn-outline-secondary btn-rounded w-100" type="button" data-toggle="modal"
 										data-target="#modal-pinjam-{{$data->id}}">

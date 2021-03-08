@@ -39,7 +39,7 @@
 						</div>
 						<div class="col-6 col-lg-2 text-center py-4">
 							<p class="mb-1 small text-muted">Menunggu Persetujuan Meminjam</p>
-							<span class="h3" id="count3">0</span>
+							<span class="h3" id="count4">0</span>
 						</div>
 						@endif
 					</div>

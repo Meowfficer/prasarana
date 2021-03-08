@@ -1,81 +1,195 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Laporan Peminjaman Barang</title>
+  <meta charset="utf-8">
+  <title>Laporan Peminjam Barang</title>
   <style>
-    body{
-      font-family: arial, sans-serif;
+    .clearfix:after {
+      content: "";
+      display: table;
+      clear: both;
     }
 
-    .judul{
-      /*margin-top: 50px;*/
-      background: #f5f5f5;
+    a {
+      color: #5D6975;
+      text-decoration: underline;
+    }
+
+    body {
+      position: relative;
+      margin: 0 auto; 
+      color: #001028;
+      background: #FFFFFF; 
+      font-family: Arial, sans-serif; 
+      font-size: 12px; 
+      font-family: Arial;
+    }
+
+    header {
+      padding: 10px 0;
+      margin-bottom: 30px;
+    }
+
+    #logo {
       text-align: center;
+      margin-bottom: 10px;
     }
 
-    .text-right{
+    #logo img {
+      width: 90px;
+    }
+
+    h1 {
+      border-top: 1px solid  #5D6975;
+      border-bottom: 1px solid  #5D6975;
+      color: #5D6975;
+      font-size: 2.4em;
+      line-height: 1.4em;
+      font-weight: normal;
+      text-align: center;
+      margin: 0 0 20px 0;
+      background: #F5F5F5;;
+    }
+
+    #project {
+      float: left;
+    }
+
+    #project span {
+      color: #5D6975;
+      /*text-align: right;*/
+      width: 52px;
+      margin-right: 10px;
+      /*display: inline-block;*/
+      font-size: 0.8em;
+    }
+
+    #company {
+      float: right;
+      color: #5D6975;
       text-align: right;
     }
 
-    .text-left{
-      text-align: left;
-    }
-
-    p{
-      margin-top: 0px;
-      margin-bottom: 0px;
-    }
-
-    .grid-container {
-      display: grid;
-      grid-template-columns: auto auto auto;
+    #project div,
+    #company div {
+      white-space: nowrap;        
     }
 
     table {
-      font-family: arial, sans-serif;
-      border-collapse: collapse;
       width: 100%;
-      margin-top: 10px;
-      margin-bottom: 50px;
+      border-collapse: collapse;
+      border-spacing: 0;
+      margin-bottom: 20px;
     }
 
-    td, th {
-      /*border: 1px solid #dddddd;*/
+    table tr:nth-child(2n-1) td {
+      background: #F5F5F5;
+    }
+
+    table th,
+    table td {
+      text-align: center;
+    }
+
+    table th {
+      padding: 5px 20px;
+      color: #5D6975;
+      border-bottom: 1px solid #C1CED9;
+      white-space: nowrap;        
+      font-weight: normal;
+    }
+
+    table .service,
+    table .desc {
       text-align: left;
-      padding: 8px;
-    }  
-
-    tr:nth-child(even) {
-      background-color: #f5f5f5;
     }
 
+    table td {
+      padding: 20px;
+      text-align: right;
+    }
+
+    table td.service,
+    table td.desc {
+      vertical-align: top;
+    }
+
+    table td.unit,
+    table td.qty,
+    table td.total {
+      font-size: 1.2em;
+    }
+
+    table td.grand {
+      border-top: 1px solid #5D6975;;
+    }
+
+    #notices .notice {
+      color: #5D6975;
+      font-size: 1.2em;
+    }
+
+    footer {
+      color: #5D6975;
+      width: 100%;
+      height: 30px;
+      position: absolute;
+      bottom: 0;
+      border-top: 1px solid #C1CED9;
+      padding: 8px 0;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-  <h1 class="judul">Laporan Peminjaman Barang</h1>
-  <h2 style="margin: 0px;">Pembuat Laporan : {{Auth::user()->name}}</h2>
-  <h2 style="margin: 0px;">Rentan Waktu : {{$dariIND}} ~ {{$sampaiIND}}</h2>
-  <p style="font-size: 15px; width: 100%; margin-top: 30px">Note : Data Berikut Diambil Berdasarkan Barang Yang Sudah Dikembalikan</p>
-  <table>
-    <tr>
-      <th>#</th>
-      <th>Kode Barang</th>
-      <th>Nama Barang</th>
-      <th>Jumlah</th>
-      <th>Nama Peminjam</th>
-      <th>Alasan Peminjam</th>
-    </tr>
-    @foreach($data as $data)
-    <tr>
-      <td>{{$loop->iteration}}</td>
-      <td>{{$data->kode_barang}}</td>
-      <td>{{$data->nama_barang}}</td>
-      <td>{{$data->jml_barang}}</td>
-      <td>{{$data->nama_peminjam}}</td>
-      <td>{{$data->deskripsi}}</td>
-    </tr>
-    @endforeach
-  </table>
-  <p class="text-right">{{$today}}</p>
+  <header class="clearfix">
+    <h1>Laporan Peminjaman Barang</h1>
+    {{-- <div id="company">
+      <div>Company Name</div>
+      <div>455 Foggy Heights,<br /> AZ 85004, US</div>
+      <div>(602) 519-0450</div>
+      <div><a href="mailto:company@example.com">company@example.com</a></div>
+    </div> --}}
+    <div id="project">
+      <div><span>Pembuat Laporan :</span> {{Auth::user()->name}}</div>
+      <div><span>Rentan Waktu :</span> {{$dariIND}} ~ {{$sampaiIND}}</div>
+      <div><span>Tanggal Dibuat :</span> {{$today}}</div>
+    </div>
+  </header>
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Kode Barang</th>
+          <th>Nama Barang</th>
+          <th>Jumlah Barang</th>
+          <th>Nama Peminjam</th>
+          <th>Alasan Meminjam</th>
+          <th>Tanggal Meminjam</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach($data as $data)
+        <tr>
+          <td>{{$loop->iteration}}</td>
+          <td>{{$data->kode_barang}}</td>
+          <td>{{$data->nama_barang}}</td>
+          <td>{{$data->jml_barang}}</td>
+          <td>{{$data->nama_peminjam}}</td>
+          <td>{{$data->deskripsi}}</td>
+          <td>{{\Carbon\Carbon::parse($data->created_at)->locale('id_ID')->isoFormat('D MMMM Y')}}</td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+    <div id="notices">
+      <div>Informasi:</div>
+      <div class="notice">Data di atas merupakan data peminjaman barang berdasarkan barang yang sudah dikembalikan oleh peminjam barang Tersebut.</div>
+    </div>
+  </main>
+  {{-- <footer>
+    Invoice was created on a computer and is valid without the signature and seal.
+  </footer> --}}
 </body>
 </html>

@@ -17,8 +17,8 @@
 							<tr>
 								<th class="text-primary">#</th>
 								<th class="text-primary">Kode Barang</th>
+								<th class="text-primary">Seri Barang</th>
 								<th class="text-primary">Nama Barang</th>
-								<th class="text-primary">Jumlah Barang</th>
 								<th class="text-primary">Tanggal Masuk</th>
 								<th class="text-primary">Nama Supplier</th>
 								<th class="text-primary">Aksi</th>
@@ -29,9 +29,10 @@
 							<tr>
 								<td>{{$loop->iteration}}</td>
 								<td>{{$data->kode_barang}}</td>
+								<td>{{$data->seri_barang}}</td>
 								<td>{{$data->nama_barang}}</td>
-								<td>{{$data->jumlah_masuk}}</td>
-								<td>{{date('d-m-Y', strtotime($data->created_at))}}</td>
+								<td>{{\Carbon\Carbon::parse($data->created_at)->locale('id_ID')->isoFormat('D MMMM Y')}}</td>
+								{{-- <td>{{date('d-m-Y', strtotime($data->created_at))}}</td> --}}
 								<td>{{$data->nama}}</td>
 								<td>
 									<button class="btn btn-outline-secondary btn-rounded w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="Dropright" aria-expanded="true">

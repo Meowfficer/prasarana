@@ -35,6 +35,7 @@ Route::group(['middleware' => 'auth'], function() {
 	//Pinjam Barang
 	Route::get('/pinjam-barang', 'BarangController@indexPinjam');
 	Route::post('/pinjam-barang', 'BarangController@storePinjam');
+	Route::get('/stok-barang/{kode_barang}', 'StokBarangController@index');
 
 
 	//Ganti Password
@@ -110,9 +111,12 @@ Route::group(['middleware' => 'auth'], function() {
 		Route::post('/pdf-riwayat', 'PdfController@pdf_riwayat');
 
 	//Count Data
-		Route::get('/count-data', function(){
-			return DB::table('pinjam_barangs')->where('status', 1)->count();
-		});
+		Route::get('/count-data', 'AjaxController@hitung_peminjam');
+		Route::get('/count-data-kembali', 'AjaxController@hitung_pengembalian');
+		Route::get('/count-data-total', 'AjaxController@hitung_total');
+		// Route::get('/count-data', function(){
+		// 	return DB::table('pinjam_barangs')->where('status', 1)->count();
+		// });
 
 	});
 

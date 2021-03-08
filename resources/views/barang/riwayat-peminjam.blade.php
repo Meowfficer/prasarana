@@ -20,8 +20,8 @@
 							<tr>
 								<th class="text-primary">#</th>
 								<th class="text-primary">Kode Barang</th>
+								<th class="text-primary">Seri Barang</th>
 								<th class="text-primary">Nama Barang</th>
-								<th class="text-primary">Jumlah Barang Yang Dipinjam</th>
 								<th class="text-primary">Nama Peminjam</th>
 								<th class="text-primary">Status</th>
 								<th class="text-primary">Waktu Diperbarui</th>
@@ -32,8 +32,8 @@
 							<tr>
 								<td>{{$loop->iteration}}</td>
 								<td>{{$data->kode_barang}}</td>
+								<td>{{$data->seri_barang}}</td>
 								<td>{{$data->nama_barang}}</td>
-								<td>{{$data->jml_barang}}</td>
 								<td>{{$data->nama_peminjam}}</td>
 								<td>
 									@if($data->status == 1)

@@ -96,15 +96,12 @@ class PagesController extends Controller
     }
 
     $barang_terdata = Barang::count();
-    $barang_tersedia = DB::table('barangs')
-    ->where('jml_barang', '!=', '0')
+    $barang_tersedia = DB::table('stok_barangs')
+    ->where('status', '=', '1')
     ->count();
     $barang_dipinjam = DB::table('pinjam_barangs')
     ->where('status', 2)
-    ->sum('jml_barang');
-    $persetujuan_dipinjam = DB::table('pinjam_barangs')
-    ->where('status', 1)
-    ->sum('jml_barang');
+    ->count();
 
     $data = DB::table('pinjam_barangs')
         ->join('barangs', 'barangs.kode_barang', '=', 'pinjam_barangs.kode_barang')
@@ -114,7 +111,7 @@ class PagesController extends Controller
         ->orderBy('id', 'desc')
         ->get();
 
-    return view('index', compact('greetings', 'barang_terdata', 'barang_tersedia', 'barang_dipinjam', 'cek_chart', 'get_tahun', 'charts', 'total_peminjam', 'persetujuan_dipinjam', 'data'));
+    return view('index', compact('greetings', 'barang_terdata', 'barang_tersedia', 'barang_dipinjam', 'cek_chart', 'get_tahun', 'charts', 'total_peminjam', 'data'));
 }
 
     public function notfound() 

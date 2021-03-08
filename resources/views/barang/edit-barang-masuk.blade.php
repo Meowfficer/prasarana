@@ -14,10 +14,10 @@
 							<option value="{{$data->kode_barang}}" selected readonly>{{$data->nama_barang}}</option>
 						</select>
 					</div>
-					<div class="form-group">
+					{{-- <div class="form-group">
 						<label for="">Jumlah Barang</label>
 						<input type="number" class="form-control" id="jumlah" placeholder="Masukkan Jumlah Barang..." name="jumlah" min="1" value="{{$data->jumlah_masuk}}">
-					</div>
+					</div> --}}
 					<div class="form-group">
 						<label for="">Nama Supplier</label>
 						<select name="supplier" class="form-control">

@@ -114,7 +114,7 @@
               <div class="dropdown-menu" aria-labelledby="formsDropdown">
                 <a class="nav-link pl-lg-2" href="{{url('persetujuan-peminjam')}}"><span class="ml-1">Persetujuan Peminjam Barang</span> <span class="badge badge-pill badge-danger" id="count2"></span></a>
                 <a class="nav-link pl-lg-2" href="{{url('peminjam-barang')}}"><span class="ml-1">Peminjam Barang</span></a>
-                <a class="nav-link pl-lg-2" href="{{url('persetujuan-pengembalian')}}"><span class="ml-1">Persetujuan Pengembalian Barang</span></a>
+                <a class="nav-link pl-lg-2" href="{{url('persetujuan-pengembalian')}}"><span class="ml-1">Persetujuan Pengembalian Barang</span> <span class="badge badge-pill badge-danger" id="count3"></span></a>
               </div>
             </li>
             <li class="nav-item dropdown">
@@ -254,12 +254,31 @@
       })
       .done(function( data ) {
         if(data > 0){
-          $('#count').html(data);
           $('#count2').html(data);
         }
+          $('#count4').html(data);
+        setTimeout(getCount, 1000);
+      });
 
-        $('#count3').html(data);
+      $.ajax({
+        type: "GET",
+        url: "{{ url('/count-data-kembali') }}"
+      })
+      .done(function( data ) {
+        if(data > 0){
+          $('#count3').html(data);
+        }
+        setTimeout(getCount, 1000);
+      });
 
+      $.ajax({
+        type: "GET",
+        url: "{{ url('/count-data-total') }}"
+      })
+      .done(function( data ) {
+        if(data > 0){
+          $('#count').html(data);
+        }
         setTimeout(getCount, 1000);
       });
     }

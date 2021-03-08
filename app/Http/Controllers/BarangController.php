@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 use DB;
 use App\Barang;
 use App\BarangMasuk;
+use App\stok_barang;
 use App\BarangKeluar;
 use App\PinjamBarang;
 use App\Supplier;
 use App\Log;
+use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use App\Exports\BarangMasukExport;
@@ -74,7 +76,7 @@ class BarangController extends Controller
         $data->kode_barang = $kode_barang_all;
         $data->save();
 
-        return redirect()->back()->with('success', 'Data Berhasil Ditambahkan!');
+        return redirect('barang')->with('success', 'Data Berhasil Ditambahkan!');
     }
 
     /**
@@ -137,7 +139,7 @@ class BarangController extends Controller
            $data->kode_barang = $kode_barang_all;
 
            $data->save();
-           return redirect()->back()->with('info', 'Data Berhasil Diubah!');
+           return redirect('barang')->with('info', 'Data Berhasil Diubah!');
        }
 
 
@@ -180,7 +182,7 @@ class BarangController extends Controller
 
     public function storeMasuk(Request $request)
     {
-        $data_masuk = new BarangMasuk;
+        // $data_masuk = new BarangMasuk;
         $request->validate([
             'kode' => 'required',
             'jumlah_barang' => 'required|min:1',
@@ -192,22 +194,37 @@ class BarangController extends Controller
             'supplier.required' => 'Pilihlah Nama Supplier!'
         ]);
         $tanda_stok = $request->kode;
-
         //Pengambilan Jumlah Stok Lama
         $stok = DB::table('barangs')
         ->where('kode_barang', $tanda_stok)
         ->first();
 
-        $data_masuk->kode_barang = $request->kode;
-        $data_masuk->jumlah_masuk = $request->jumlah_barang;
-        $data_masuk->id_supplier = $request->supplier;
-        $data_masuk->save();
+
+        for ($i=1; $i <= $request->jumlah_barang ; $i++) { 
+            $rand = mt_rand(0, 100);
+            //Input Data Barang Masuk
+            $data_masuk = new BarangMasuk;
+
+            $data_masuk->kode_barang = $request->kode;
+            $data_masuk->seri_barang = $request->kode . '-' . $rand;
+            $data_masuk->jumlah_masuk = 1;
+            $data_masuk->id_supplier = $request->supplier;
+            $data_masuk->save();
+
+            //Input Data Stok Barang
+            $stok_barang = new stok_barang;
+
+            $stok_barang->kode_barang = $request->kode;
+            $stok_barang->seri_barang = $request->kode . '-' . $rand;
+            $stok_barang->status = 1;
+            $stok_barang->save();
+        }
 
         //Proses Simpan Stok Barang
         $stok_baru = $stok->jml_barang + $request->jumlah_barang;
         DB::table('barangs')->where('kode_barang', $tanda_stok)->update(['jml_barang' => $stok_baru]);
 
-        return redirect()->back()->with('success', 'Data Berhasil Ditambahkan!') ;
+        return redirect('barang-masuk')->with('success', 'Data Berhasil Ditambahkan!') ;
 
     }
 
@@ -227,28 +244,36 @@ class BarangController extends Controller
 
     public function updateMasuk(Request $request, $id)
     {
+        $request->validate([
+            'kode' => 'required',
+            'supplier' => 'required'
+        ],[
+            'kode.required' => 'Pilihlah Nama Barang!',
+            'supplier.required' => 'Pilihlah Nama Supplier!'
+        ]);
+
         $data_masuk = BarangMasuk::find($id);
-        $data_masuk_lama = DB::table('barang_masuks')
-        ->where('id', $id)
-        ->first();
-        $tanda_stok = $request->kode;
+        // $data_masuk_lama = DB::table('barang_masuks')
+        // ->where('id', $id)
+        // ->first();
+        // $tanda_stok = $request->kode;
 
         //Pengambilan Jumlah Stok Lama
-        $stok = DB::table('barangs')
-        ->where('kode_barang', $tanda_stok)
-        ->first();
+        // $stok = DB::table('barangs')
+        // ->where('kode_barang', $tanda_stok)
+        // ->first();
 
         $data_masuk->kode_barang = $request->kode;
-        $data_masuk->jumlah_masuk = $request->jumlah;
+        // $data_masuk->jumlah_masuk = $request->jumlah;
         $data_masuk->id_supplier = $request->supplier;
         $data_masuk->save();
 
         //Proses Simpan Stok Barang
-        $proses_stok = $stok->jml_barang - $data_masuk_lama->jumlah_masuk; 
-        $stok_baru = $proses_stok + $request->jumlah;
-        DB::table('barangs')->where('kode_barang', $tanda_stok)->update(['jml_barang' => $stok_baru]);
+        // $proses_stok = $stok->jml_barang - $data_masuk_lama->jumlah_masuk; 
+        // $stok_baru = $proses_stok + $request->jumlah;
+        // DB::table('barangs')->where('kode_barang', $tanda_stok)->update(['jml_barang' => $stok_baru]);
 
-        return redirect()->back()->with('info', 'Data Berhasil Diubah!');
+        return redirect('barang-masuk')->with('info', 'Data Berhasil Diubah!');
     }
 
     public function destroyMasuk($id)
@@ -269,16 +294,20 @@ class BarangController extends Controller
         } else {
             DB::table('barangs')->where('kode_barang', $data_masuk_lama->kode_barang)->update(['jml_barang' => $stok_baru]);
         }
+
+        //Hapus Stok Barang
+        $stok_barang = stok_barang::where('seri_barang', $data_masuk_lama->seri_barang)->delete();
+
         BarangMasuk::destroy($id);
 
-        return redirect()->back()->with('danger', 'Data Telah Terhapus!');
+        return redirect('barang-masuk')->with('danger', 'Data Telah Terhapus!');
     }
 
 
-    public function export_excel()
-    {
-        return Excel::download(new BarangMasukExport, 'Laporan Peminjam Barang.xlsx');
-    }
+    // public function export_excel()
+    // {
+    //     return Excel::download(new BarangMasukExport, 'Laporan Peminjam Barang.xlsx');
+    // }
 
     //Pinjam Meminjam
 
@@ -293,22 +322,28 @@ class BarangController extends Controller
         $data = new PinjamBarang;
 
         if ($request->kode == NULL) {
-            return redirect('pinjam-barang')->with('danger', 'Kode Barang Tidak Boleh Kosong');
+            return redirect()->back()->with('danger', 'Kode Barang Tidak Boleh Kosong');
+        }
+
+        $cek = DB::table('stok_barangs')->where('seri_barang', $request->seri)->first();
+
+        if ($cek->status == 2) {
+            return redirect()->back()->with('danger', 'Barang Sudah Dipinjam Oleh Orang Lain, Harap Refresh Halaman!');
         }
 
         $data_stock = Barang::where('kode_barang', '=', $request->kode)
         ->select('jml_barang')
         ->first();
-        $max = $data_stock->jml_barang;
+        // $max = $data_stock->jml_barang;
         // dd($max);
 
-        if ($request->jumlah > $max) {
-            return redirect('pinjam-barang')->with('danger', 'Batas Maksimal Barang Dipinjam Terlampaui');
-        }
+        // if ($request->jumlah > $max) {
+        //     return redirect('pinjam-barang')->with('danger', 'Batas Maksimal Barang Dipinjam Terlampaui');
+        // }
 
-        $request->validate([
-            'jumlah' => "required",
-        ]);
+        // $request->validate([
+        //     'jumlah' => "required",
+        // ]);
 
 
         $tanda_stok = $request->kode;
@@ -319,13 +354,16 @@ class BarangController extends Controller
         ->first();
         
         //Proses Simpan Stok Barang
-        $stok_baru = $stok->jml_barang - $request->jumlah;
+        $stok_baru = $stok->jml_barang - 1;
         DB::table('barangs')->where('kode_barang', $tanda_stok)->update(['jml_barang' => $stok_baru]);
+
+        DB::table('stok_barangs')->where('seri_barang', $request->seri)->update(['status' => 2]);
 
         $data->id_peminjam = Auth::user()->id;
         $data->deskripsi = $request->deskripsi;
         $data->kode_barang = $request->kode;
-        $data->jml_barang = $request->jumlah;
+        $data->seri_barang = $request->seri;
+        $data->jml_barang = 1;
         $data->status = 1;
 
         $data->save();
@@ -365,7 +403,7 @@ class BarangController extends Controller
         DB::table('pinjam_barangs')->where('id', $id)->update(['status' => 2]);
 
         // return redirect('persetujuan-peminjam')->with('success', 'Peminjam Berhasil Disetujui!');
-        return redirect()->back()->with('success', 'Peminjam Berhasil Disetujui!');
+        return redirect('persetujuan-peminjam')->with('success', 'Peminjam Berhasil Disetujui!');
     }
 
     public function KembalikanBarang(Request $request, $id)
@@ -415,6 +453,7 @@ class BarangController extends Controller
         $stok_baru = $stok->jml_barang + $data_masuk_lama->jml_barang; 
         DB::table('barangs')->where('kode_barang', $data_masuk_lama->kode_barang)->update(['jml_barang' => $stok_baru]);
         DB::table('pinjam_barangs')->where('id', $id)->update(['status' => 5]);
+        DB::table('stok_barangs')->where('seri_barang', $data_masuk_lama->seri_barang)->update(['status' => 1]);
 
         return redirect()->back()->with('warning', 'Peminjam Ditolak!');
     }
@@ -435,8 +474,9 @@ class BarangController extends Controller
         DB::table('barangs')->where('kode_barang', $data_lama->kode_barang)->update(['jml_barang' => $stok_baru]);
         
         DB::table('pinjam_barangs')->where('id', $id)->update(['status' => 4]);
+        DB::table('stok_barangs')->where('seri_barang', $data_lama->seri_barang)->update(['status' => 1]);
 
-        return redirect()->back()->with('success', 'Barang Berhasil Dikembalikan!');
+        return redirect('persetujuan-pengembalian')->with('success', 'Barang Berhasil Dikembalikan!');
     }
 
     public function RiwayatPeminjam()

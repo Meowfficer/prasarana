@@ -1,24 +1,27 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use DB;
-use App\Log;
+use App\stok_barang;
 use Illuminate\Http\Request;
 
-class LogController extends Controller
+class StokBarangController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($kode_barang)
     {
-        $data = DB::table('logs')
-        ->join('barangs', 'barangs.kode_barang', '=', 'logs.kode_barang_log')
-        ->select('logs.*', 'barangs.nama_barang')
+        // $data = stok_barang::all();
+        $data = DB::table('stok_barangs')
+        ->join('barangs', 'barangs.kode_barang', '=', 'stok_barangs.kode_barang')
+        ->select('stok_barangs.*', 'barangs.nama_barang')
+        ->where('stok_barangs.kode_barang', $kode_barang)
         ->get();
-        return view('log.index', compact('data'));
+        return view('stok_barang.index', compact('data'));
     }
 
     /**
@@ -45,10 +48,10 @@ class LogController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Log  $log
+     * @param  \App\stok_barang  $stok_barang
      * @return \Illuminate\Http\Response
      */
-    public function show(Log $log)
+    public function show(stok_barang $stok_barang)
     {
         //
     }
@@ -56,10 +59,10 @@ class LogController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Log  $log
+     * @param  \App\stok_barang  $stok_barang
      * @return \Illuminate\Http\Response
      */
-    public function edit(Log $log)
+    public function edit(stok_barang $stok_barang)
     {
         //
     }
@@ -68,10 +71,10 @@ class LogController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Log  $log
+     * @param  \App\stok_barang  $stok_barang
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Log $log)
+    public function update(Request $request, stok_barang $stok_barang)
     {
         //
     }
@@ -79,10 +82,10 @@ class LogController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Log  $log
+     * @param  \App\stok_barang  $stok_barang
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Log $log)
+    public function destroy(stok_barang $stok_barang)
     {
         //
     }
