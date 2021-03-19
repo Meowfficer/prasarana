@@ -144,6 +144,7 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
               <li class="nav-item">
+                <a class="nav-link pl-3" href="{{url('/user/edit/')}}">Pengaturan Akun</a>
                 <a class="nav-link pl-3" href="{{url('/change-password')}}">Ganti Password</a>
                 <a class="nav-link pl-3" href="{{url('/logout')}}">Log Out</a>
               </li>
@@ -246,98 +247,18 @@
     cb(start, end);
   </script>
   <script>
-    function getCount() {
-
-      $.ajax({
-        type: "GET",
-        url: "{{ url('/count-data') }}"
-      })
-      .done(function( data ) {
-        if(data > 0){
-          $('#count2').html(data);
-        }
-          $('#count4').html(data);
-        setTimeout(getCount, 1000);
-      });
-
-      $.ajax({
-        type: "GET",
-        url: "{{ url('/count-data-kembali') }}"
-      })
-      .done(function( data ) {
-        if(data > 0){
-          $('#count3').html(data);
-        }
-        setTimeout(getCount, 1000);
-      });
-
-      $.ajax({
-        type: "GET",
-        url: "{{ url('/count-data-total') }}"
-      })
-      .done(function( data ) {
-        if(data > 0){
-          $('#count').html(data);
-        }
-        setTimeout(getCount, 1000);
-      });
-    }
-    getCount();
-  </script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag()
-    {
-      dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    gtag('config', 'UA-56159088-1');
-  </script>
-  <script src="{{asset('public/js/bootstrap-notify.min.js')}}"></script>
-  <script src="{{asset('public/js/bootstrap-notify.js')}}"></script>
-  @if(session('success'))
-  <script>
+  //Looping Popup Form
+  var old_count = 0;
+  var i = 0;
+  $.ajax({
+    type: "GET",
+    url: "{{ url('/count-data-bread') }}"
+  })
+  .done(function( data ) {
+   if (data > old_count) { if (i == 0){old_count = data;} 
+   else{
     $.notify({
-      message: '{{ \Illuminate\Support\Facades\Session::get('success') }}'
-    },{
-      element: 'body',
-      position: null,
-      type: "success",
-      allow_dismiss: true,
-      newest_on_top: false,
-      showProgressbar: true,
-      placement: {
-        from: "top",
-        align: "right"
-      },
-      delay: 5000,
-      timer: 1000
-    });
-  </script>
-  @elseif(session('danger'))
-  <script>
-    $.notify({
-      message: '{{ \Illuminate\Support\Facades\Session::get('danger') }}'
-    },{
-      element: 'body',
-      position: null,
-      type: "danger",
-      allow_dismiss: true,
-      newest_on_top: false,
-      showProgressbar: true,
-      placement: {
-        from: "top",
-        align: "right"
-      },
-      delay: 5000,
-      timer: 1000
-    });
-  </script>
-  @elseif(session('info'))
-  <script>
-    $.notify({
-      message: '{{ \Illuminate\Support\Facades\Session::get('info') }}'
+      message: 'Test'
     },{
       element: 'body',
       position: null,
@@ -351,67 +272,179 @@
       },
       delay: 5000,
       timer: 1000
+    });        
+    old_count = data;}
+  } i=1;
+  setTimeout(getCount, 1000);
+});
+</script>
+<script>
+  function getCount() {
+
+    $.ajax({
+      type: "GET",
+      url: "{{ url('/count-data') }}"
+    })
+    .done(function( data ) {
+      if(data > 0){
+        $('#count2').html(data);
+      }
+      $('#count4').html(data);
+      setTimeout(getCount, 1000);
     });
-  </script>
-  @elseif(session('warning'))
-  <script>
-    $.notify({
-      message: '{{ \Illuminate\Support\Facades\Session::get('warning') }}'
-    },{
-      element: 'body',
-      position: null,
-      type: "warning",
-      allow_dismiss: true,
-      newest_on_top: false,
-      showProgressbar: true,
-      placement: {
-        from: "top",
-        align: "right"
-      },
-      delay: 5000,
-      timer: 1000
+
+    $.ajax({
+      type: "GET",
+      url: "{{ url('/count-data-kembali') }}"
+    })
+    .done(function( data ) {
+      if(data > 0){
+        $('#count3').html(data);
+      }
+      setTimeout(getCount, 1000);
     });
-  </script>
-  @endif
-  @error('jumlah')
-  <script>
-    $.notify({
-      message: '{{ $message }}'
-    },{
-      element: 'body',
-      position: null,
-      type: "warning",
-      allow_dismiss: true,
-      newest_on_top: false,
-      showProgressbar: true,
-      placement: {
-        from: "top",
-        align: "right"
-      },
-      delay: 5000,
-      timer: 1000
+
+    $.ajax({
+      type: "GET",
+      url: "{{ url('/count-data-total') }}"
+    })
+    .done(function( data ) {
+      if(data > 0){
+        $('#count').html(data);
+      }
+      setTimeout(getCount, 1000);
     });
-  </script>
-  @enderror
-  @error('nama_peminjam')
-  <script>
-    $.notify({
-      message: '{{ $message }}'
-    },{
-      element: 'body',
-      position: null,
-      type: "warning",
-      allow_dismiss: true,
-      newest_on_top: false,
-      showProgressbar: true,
-      placement: {
-        from: "top",
-        align: "right"
-      },
-      delay: 5000,
-      timer: 1000
-    });
-  </script>
-  @enderror
+  }
+  getCount();
+</script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag()
+  {
+    dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+  gtag('config', 'UA-56159088-1');
+</script>
+<script src="{{asset('public/js/bootstrap-notify.min.js')}}"></script>
+<script src="{{asset('public/js/bootstrap-notify.js')}}"></script>
+@if(session('success'))
+<script>
+  $.notify({
+    message: '{{ \Illuminate\Support\Facades\Session::get('success') }}'
+  },{
+    element: 'body',
+    position: null,
+    type: "success",
+    allow_dismiss: true,
+    newest_on_top: false,
+    showProgressbar: true,
+    placement: {
+      from: "top",
+      align: "right"
+    },
+    delay: 5000,
+    timer: 1000
+  });
+</script>
+@elseif(session('danger'))
+<script>
+  $.notify({
+    message: '{{ \Illuminate\Support\Facades\Session::get('danger') }}'
+  },{
+    element: 'body',
+    position: null,
+    type: "danger",
+    allow_dismiss: true,
+    newest_on_top: false,
+    showProgressbar: true,
+    placement: {
+      from: "top",
+      align: "right"
+    },
+    delay: 5000,
+    timer: 1000
+  });
+</script>
+@elseif(session('info'))
+<script>
+  $.notify({
+    message: '{{ \Illuminate\Support\Facades\Session::get('info') }}'
+  },{
+    element: 'body',
+    position: null,
+    type: "info",
+    allow_dismiss: true,
+    newest_on_top: false,
+    showProgressbar: true,
+    placement: {
+      from: "top",
+      align: "right"
+    },
+    delay: 5000,
+    timer: 1000
+  });
+</script>
+@elseif(session('warning'))
+<script>
+  $.notify({
+    message: '{{ \Illuminate\Support\Facades\Session::get('warning') }}'
+  },{
+    element: 'body',
+    position: null,
+    type: "warning",
+    allow_dismiss: true,
+    newest_on_top: false,
+    showProgressbar: true,
+    placement: {
+      from: "top",
+      align: "right"
+    },
+    delay: 5000,
+    timer: 1000
+  });
+</script>
+@endif
+@error('jumlah')
+<script>
+  $.notify({
+    message: '{{ $message }}'
+  },{
+    element: 'body',
+    position: null,
+    type: "warning",
+    allow_dismiss: true,
+    newest_on_top: false,
+    showProgressbar: true,
+    placement: {
+      from: "top",
+      align: "right"
+    },
+    delay: 5000,
+    timer: 1000
+  });
+</script>
+@enderror
+@error('nama_peminjam')
+<script>
+  $.notify({
+    message: '{{ $message }}'
+  },{
+    element: 'body',
+    position: null,
+    type: "warning",
+    allow_dismiss: true,
+    newest_on_top: false,
+    showProgressbar: true,
+    placement: {
+      from: "top",
+      align: "right"
+    },
+    delay: 5000,
+    timer: 1000
+  });
+</script>
+@enderror
 </body>
 </html>

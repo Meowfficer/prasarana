@@ -35,7 +35,7 @@
 									@if($data->status == 1)
 									<h3><span class="btn btn-success text-white">Tersedia</span></h3>
 									@else
-									<h3><span class="btn btn-warning text-white">Dipinjam</span></h3>
+									<h3><span class="btn btn-warning text-white">Tidak Tersedia</span></h3>
 									@endif
 								</td>
 								<td>

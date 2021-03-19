@@ -8,7 +8,6 @@ use App\stok_barang;
 use App\BarangKeluar;
 use App\PinjamBarang;
 use App\Supplier;
-use App\Log;
 use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;

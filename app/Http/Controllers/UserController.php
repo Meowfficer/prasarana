@@ -55,6 +55,36 @@ class UserController extends Controller
         return view('user.edit-account', compact('data'));
     }
 
+    public function ubah()
+    {
+        $data = User::find(Auth::user()->id);
+        return view('user.edit-account', compact('data'));
+    }
+
+    public function input(Request $request)
+    {
+        $data = User::find(Auth::user()->id);
+        if($request->username == $data->username)
+        {
+           $request->validate([
+            'nama' => 'required'
+        ],[
+            'nama.required' => 'Nama Tidak Boleh Kosong!',
+        ]);
+           $data->name = $request->nama;
+       }else{
+        $request->validate([
+            'username' => 'required|unique:users',
+            'nama' => 'required'
+        ],[
+            'nama.required' => 'Nama Tidak Boleh Kosong!',
+            'username.required' => 'Username Tidak Boleh Kosong!',
+            'username.unique' => 'Username Sudah Terpakai! Harap Coba Yang Lain'
+        ]);
+        $data->name = $request->nama;
+        $data->username = strtolower($request->username);
+    }
+
     public function update(Request $request, $id)
     {
         $data = User::find($id);

@@ -20,9 +20,9 @@ Route::post('/login', 'LoginController@login');
 Route::get('/logout', 'LoginController@logout');
 
 // Route::any('{catchall}', 'PagesController@notfound')->where('catchall', '.*');
-   Route::fallback(function () {
-       return view('errors.404');
-   });
+Route::fallback(function () {
+	return view('errors.404');
+});
 
 Route::group(['middleware' => 'auth'], function() {
 	
@@ -47,8 +47,9 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('/kembalikan-barang', 'BarangController@indexKembalikan');
 	Route::post('/kembalikan-barang/{id}', 'BarangController@KembalikanBarang');
 
-
-	Route::post('/tester', 'PagesController@Tester');
+	//Pengaturan Akun (User)
+	Route::get('/user/edit/', 'UserController@ubah');
+	Route::post('/user/edit/', 'UserController@input');
 
 	Route::group(['middleware' => ['admin']], function(){
 
@@ -112,6 +113,7 @@ Route::group(['middleware' => 'auth'], function() {
 
 	//Count Data
 		Route::get('/count-data', 'AjaxController@hitung_peminjam');
+		Route::get('/count-data-bread', 'AjaxController@hitung_peminjam');
 		Route::get('/count-data-kembali', 'AjaxController@hitung_pengembalian');
 		Route::get('/count-data-total', 'AjaxController@hitung_total');
 		// Route::get('/count-data', function(){

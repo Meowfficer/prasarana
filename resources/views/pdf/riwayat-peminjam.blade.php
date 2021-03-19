@@ -162,8 +162,8 @@
         <tr>
           <th>#</th>
           <th>Kode Barang</th>
+          <th>Seri Barang</th>
           <th>Nama Barang</th>
-          <th>Jumlah Barang</th>
           <th>Nama Peminjam</th>
           <th>Alasan Meminjam</th>
           <th>Tanggal Meminjam</th>
@@ -174,8 +174,8 @@
         <tr>
           <td>{{$loop->iteration}}</td>
           <td>{{$data->kode_barang}}</td>
+          <td>{{$data->seri_barang}}</td>
           <td>{{$data->nama_barang}}</td>
-          <td>{{$data->jml_barang}}</td>
           <td>{{$data->nama_peminjam}}</td>
           <td>{{$data->deskripsi}}</td>
           <td>{{\Carbon\Carbon::parse($data->created_at)->locale('id_ID')->isoFormat('D MMMM Y')}}</td>
