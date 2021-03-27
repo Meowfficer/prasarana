@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 26 Mar 2021 pada 13.46
+-- Waktu pembuatan: 27 Mar 2021 pada 15.17
 -- Versi server: 10.4.11-MariaDB
 -- Versi PHP: 7.4.2
 
@@ -39,6 +39,13 @@ CREATE TABLE `barangs` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `barangs`
+--
+
+INSERT INTO `barangs` (`id`, `kode_barang`, `nama_barang`, `jml_barang`, `jenis_barang`, `kategori_barang`, `created_at`, `updated_at`) VALUES
+(7, 'PRY93', 'In Focus', 4, 'Elektronik', 'Proyekto', '2021-03-26 18:54:48', '2021-03-26 18:54:48');
+
 -- --------------------------------------------------------
 
 --
@@ -70,6 +77,17 @@ CREATE TABLE `barang_masuks` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `barang_masuks`
+--
+
+INSERT INTO `barang_masuks` (`id`, `kode_barang`, `seri_barang`, `jumlah_masuk`, `id_supplier`, `created_at`, `updated_at`) VALUES
+(7, 'PRY93', 'PRY93-19', 1, 1, '2021-03-26 15:37:43', '2021-03-26 15:37:43'),
+(8, 'PRY93', 'PRY93-83', 1, 1, '2021-03-26 17:41:07', '2021-03-26 17:41:07'),
+(9, 'PRY93', 'PRY93-25', 1, 1, '2021-03-26 17:41:08', '2021-03-26 17:41:08'),
+(10, 'PRY93', 'PRY93-23', 1, 1, '2021-03-26 17:41:09', '2021-03-26 17:41:09'),
+(11, 'PRY93', 'PRY93-75', 1, 1, '2021-03-26 17:41:09', '2021-03-26 17:41:09');
 
 -- --------------------------------------------------------
 
@@ -141,6 +159,14 @@ CREATE TABLE `pinjam_barangs` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data untuk tabel `pinjam_barangs`
+--
+
+INSERT INTO `pinjam_barangs` (`id`, `id_peminjam`, `kode_barang`, `seri_barang`, `jml_barang`, `status`, `deskripsi`, `created_at`, `updated_at`) VALUES
+(1, 1, 'PRY93', 'PRY93-5', 1, 5, 'Presentasi', '2021-03-26 17:23:58', '2021-03-26 17:23:58'),
+(2, 4, 'PRY93', 'PRY93-19', 1, 5, 'Presentasi', '2021-03-26 18:52:19', '2021-03-26 18:52:19');
+
 -- --------------------------------------------------------
 
 --
@@ -155,6 +181,17 @@ CREATE TABLE `stok_barangs` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `stok_barangs`
+--
+
+INSERT INTO `stok_barangs` (`id`, `kode_barang`, `seri_barang`, `status`, `created_at`, `updated_at`) VALUES
+(7, 'PRY93', 'PRY93-19', 1, '2021-03-26 15:37:43', '2021-03-26 15:37:43'),
+(8, 'PRY93', 'PRY93-83', 1, '2021-03-26 17:41:07', '2021-03-26 17:41:07'),
+(9, 'PRY93', 'PRY93-25', 1, '2021-03-26 17:41:08', '2021-03-26 17:41:08'),
+(10, 'PRY93', 'PRY93-23', 1, '2021-03-26 17:41:09', '2021-03-26 17:41:09'),
+(11, 'PRY93', 'PRY93-75', 1, '2021-03-26 17:41:09', '2021-03-26 17:41:09');
 
 -- --------------------------------------------------------
 
@@ -172,6 +209,14 @@ CREATE TABLE `suppliers` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `suppliers`
+--
+
+INSERT INTO `suppliers` (`id`, `nama`, `alamat`, `no_telp`, `kota`, `created_at`, `updated_at`) VALUES
+(1, 'Agung', 'Jl. Agung Sahaja', '085315267519', 'Kota Agung', '2021-03-26 17:44:35', '2021-03-26 17:44:35'),
+(2, 'Budi', 'Jl. Balas Budi', '085423651126', 'Kota Budi', '2021-03-26 18:24:44', '2021-03-26 18:24:44');
+
 -- --------------------------------------------------------
 
 --
@@ -185,6 +230,7 @@ CREATE TABLE `users` (
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status_akun` int(11) NOT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -194,9 +240,10 @@ CREATE TABLE `users` (
 -- Dumping data untuk tabel `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `username`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Alandra', 'admin', NULL, '$2y$10$q0zuurZztwzjR.woexOUXe9BaxwLGGUsqQPefySQYQGToc8uN5/tS', '1', NULL, '2020-12-02 09:49:58', '2021-02-26 18:06:23'),
-(2, 'User', 'user', NULL, '$2y$10$T5svT1rDTmmNx3ZAZqATduygtjQuhBd44qgO81cX2Eg4XiE1kMpNq', '2', NULL, '2020-12-02 21:17:24', '2020-12-02 21:17:24');
+INSERT INTO `users` (`id`, `name`, `username`, `email_verified_at`, `password`, `role`, `status_akun`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Alandra', 'admin', NULL, '$2y$10$q0zuurZztwzjR.woexOUXe9BaxwLGGUsqQPefySQYQGToc8uN5/tS', '1', 1, NULL, '2020-12-02 09:49:58', '2021-02-26 18:06:23'),
+(2, 'User', 'user', NULL, '$2y$10$T5svT1rDTmmNx3ZAZqATduygtjQuhBd44qgO81cX2Eg4XiE1kMpNq', '2', 1, NULL, '2020-12-02 21:17:24', '2020-12-02 21:17:24'),
+(4, 'Alandra Ravi', 'alandra', NULL, '$2y$10$dEGx8HFPXrBch6KXFPOf3.UF/HsYwF79nIxHFr3OMYiE6jPWl5LfK', '2', 0, NULL, '2021-03-26 18:47:20', '2021-03-27 09:21:14');
 
 --
 -- Indexes for dumped tables
@@ -281,7 +328,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `barangs`
 --
 ALTER TABLE `barangs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang_keluars`
@@ -293,7 +340,7 @@ ALTER TABLE `barang_keluars`
 -- AUTO_INCREMENT untuk tabel `barang_masuks`
 --
 ALTER TABLE `barang_masuks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `failed_jobs`
@@ -311,55 +358,48 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT untuk tabel `pinjam_barangs`
 --
 ALTER TABLE `pinjam_barangs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `stok_barangs`
 --
 ALTER TABLE `stok_barangs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `suppliers`
 --
 ALTER TABLE `suppliers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Ketidakleluasaan untuk tabel `barang_keluars`
---
-ALTER TABLE `barang_keluars`
-  ADD CONSTRAINT `barang_keluars_ibfk_1` FOREIGN KEY (`kode_barang`) REFERENCES `pinjam_barangs` (`kode_barang`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Ketidakleluasaan untuk tabel `barang_masuks`
 --
 ALTER TABLE `barang_masuks`
-  ADD CONSTRAINT `barang_masuks_ibfk_1` FOREIGN KEY (`id_supplier`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `barang_masuks_ibfk_1` FOREIGN KEY (`id_supplier`) REFERENCES `suppliers` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `barang_masuks_ibfk_2` FOREIGN KEY (`kode_barang`) REFERENCES `barangs` (`kode_barang`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ketidakleluasaan untuk tabel `pinjam_barangs`
 --
 ALTER TABLE `pinjam_barangs`
-  ADD CONSTRAINT `pinjam_barangs_ibfk_1` FOREIGN KEY (`kode_barang`) REFERENCES `stok_barangs` (`kode_barang`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `pinjam_barangs_ibfk_2` FOREIGN KEY (`id_peminjam`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `pinjam_barangs_ibfk_2` FOREIGN KEY (`id_peminjam`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Ketidakleluasaan untuk tabel `stok_barangs`
 --
 ALTER TABLE `stok_barangs`
-  ADD CONSTRAINT `stok_barangs_ibfk_1` FOREIGN KEY (`kode_barang`) REFERENCES `barang_masuks` (`kode_barang`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `stok_barangs_ibfk_1` FOREIGN KEY (`seri_barang`) REFERENCES `barang_masuks` (`seri_barang`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
