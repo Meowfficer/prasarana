@@ -46,21 +46,17 @@
 								</td>
 								<td>{{$data->kategori_barang}}</td>
 								<td>
+									@if($data->jml_barang != null || $data->jml_barang != 0)
 									<button class="btn btn-outline-secondary btn-rounded w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="Dropright" aria-expanded="true">
 										{{-- <i class="fe fe-more-horizontal"></i> --}}
 									</button>
 									<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-										@if($data->jml_barang == null || $data->jml_barang == 0)
-										<a class="dropdown-item" href="{{url('barang/edit/'.$data->id)}}">Edit</a>
-										<a class="dropdown-item" href="#" data-toggle="modal"
-										data-target="#danger-header-modal-{{$data->id}}">Hapus</a>
-										@else
 										<a class="dropdown-item" href="{{url('stok-barang/'.$data->kode_barang)}}">Lihat Stok</a>
 										<a class="dropdown-item" href="{{url('barang/edit/'.$data->id)}}">Edit</a>
 										<a class="dropdown-item" href="#" data-toggle="modal"
 										data-target="#danger-header-modal-{{$data->id}}">Hapus</a>
-										@endif
 									</div>
+									@endif
 								</td>
 							</tr>
 							<!--Modal Section-->
@@ -84,7 +80,7 @@
 											<div class="modal-footer">
 												<button type="button" class="btn btn-light"
 												data-dismiss="modal">Batal</button>
-												<button type="submit" class="btn btn-danger">Hapus</button>
+												<button type="submit" onclick="this.disabled=true;this.form.submit();" class="btn btn-danger">Hapus</button>
 											</div>
 										</form>
 									</div><!-- /.modal-content -->

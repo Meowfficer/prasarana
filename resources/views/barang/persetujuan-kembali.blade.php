@@ -62,7 +62,7 @@
 											</div>
 											<div class="modal-footer outer">
 												<button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
-												<button type="submit" class="btn btn-success text-white">Konfirmasi</button>
+												<button type="submit" class="btn btn-success text-white" onclick="this.disabled=true;this.form.submit();">Konfirmasi</button>
 											</div>
 										</form>
 									</div><!-- /.modal-content -->

@@ -24,10 +24,15 @@ Route::fallback(function () {
 	return view('errors.404');
 });
 
+
 Route::group(['middleware' => 'auth'], function() {
 	
 	//Supplier
 	Route::get('/', 'PagesController@index');
+
+	//Cetak Butki
+	Route::get('/cetak-bukti/{id}', 'PdfController@cetak_bukti');
+
 
 	//Riwayat Peminjam Barang
 	Route::get('/history-peminjam-barang', 'BarangController@RiwayatPeminjam');
@@ -52,6 +57,10 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('/user/edit/', 'UserController@input');
 
 	Route::group(['middleware' => ['admin']], function(){
+
+		//Ban Unban User
+		Route::post('/account/ban/{id}', 'UserController@ban');
+		Route::post('/account/unban/{id}', 'UserController@unban');
 
 		//Barang Keluar
 		Route::get('/barang-keluar', 'BarangKeluarController@index');
@@ -88,8 +97,8 @@ Route::group(['middleware' => 'auth'], function() {
 		Route::get('/barang-masuk', 'BarangController@indexMasuk');
 		Route::get('/add-barang-masuk', 'BarangController@createMasuk');
 		Route::post('/barang-masuk', 'BarangController@storeMasuk');
-		Route::get('/barang-masuk/edit/{id}', 'BarangController@editMasuk');
-		Route::put('/barang-masuk/{id}', 'BarangController@updateMasuk');
+		// Route::get('/barang-masuk/edit/{id}', 'BarangController@editMasuk');
+		// Route::put('/barang-masuk/{id}', 'BarangController@updateMasuk');
 		Route::delete('/barang-masuk/{id}', 'BarangController@destroyMasuk');
 
 	//Persetujuan Pengembalian
@@ -106,7 +115,7 @@ Route::group(['middleware' => 'auth'], function() {
 		Route::post('/tolak-peminjam/{id}', 'BarangController@TolakPeminjam');
 
 	//Laporan
-		Route::get('/peminjam-barang/export_excel', 'BarangController@export_excel');
+		// Route::get('/peminjam-barang/export_excel', 'BarangController@export_excel');
 
 	//PDF
 		Route::post('/pdf-riwayat', 'PdfController@pdf_riwayat');

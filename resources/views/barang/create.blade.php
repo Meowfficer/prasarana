@@ -30,7 +30,7 @@
 					</div>
 				</div>
 				<div class="card-footer">
-					<button type="submit" class="btn btn-info">Tambah</button>
+					<button type="submit" class="btn btn-info" onclick="this.disabled=true;this.form.submit();">Tambah</button>
 					<a href="{{url('/barang')}}" class="btn btn-secondary">Kembali</a>
 				</div>
 			</form>

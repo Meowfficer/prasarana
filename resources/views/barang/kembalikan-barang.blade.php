@@ -85,7 +85,7 @@
 												</div>
 											</div>
 											<div class="modal-footer outer">
-												<button type="submit" class="btn btn-danger">Kembalikan</button>
+												<button type="submit" class="btn btn-danger" onclick="this.disabled=true;this.form.submit();">Kembalikan</button>
 											</form>
 										</div>
 									</div><!-- /.modal-content -->

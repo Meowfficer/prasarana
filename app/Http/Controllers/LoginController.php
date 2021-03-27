@@ -36,9 +36,9 @@ class LoginController extends Controller
   $password = $request->password;
 
   $data = User::where('username', $username)->first();
-   // if ($data == null) {
-   //    return redirect('login')->with('warning', 'Username Tidak Terdaftar!');
-   // }
+   if ($data->status_akun == 0) {
+      return redirect('login')->with('warning', 'Akun Telah Dinonaktifkan, Harap Hubungi Administrator dan Coba Lagi!');
+   }
   if ($data) {
     $credentials = $request->only('username', 'password');
     if (Auth::attempt($credentials)) {
@@ -59,6 +59,7 @@ public function store(Request $request)
  $data->username = $request->username;
  $data->password = Hash::make($request->password);
  $data->role = 1;
+ $data->status = 1;
  $data->save();
  return redirect('login');
 }

@@ -8,7 +8,7 @@
 			<div class="card-body">
 				<h4 class="card-title">Data Barang Masuk</h4>
 				<div class="card-tool mb-3 row mx-1">
-					<a href="{{url('/add-barang-masuk')}}" class="btn btn-success col-2 text-white">Tambah Data Barang Masuk</a>
+					<a href="{{url('/add-barang-masuk')}}" class="btn btn-success col-2 text-white">Tambah Data</a>
 					{{-- <a href="{{url('/peminjam-barang/export_excel')}}" class="btn btn-success col-1 ml-auto text-white">Laporan</a> --}}
 				</div>
 				<div class="table-responsive">
@@ -35,14 +35,16 @@
 								{{-- <td>{{date('d-m-Y', strtotime($data->created_at))}}</td> --}}
 								<td>{{$data->nama}}</td>
 								<td>
+									@if($data->status == 1)
 									<button class="btn btn-outline-secondary btn-rounded w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="Dropright" aria-expanded="true">
 										<i class="fa fa-ellipsis-h"></i>
 									</button>
 									<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-										<a class="dropdown-item" href="{{url('barang-masuk/edit/'.$data->id)}}">Edit</a>
+										{{-- <a class="dropdown-item" href="{{url('barang-masuk/edit/'.$data->id)}}">Edit</a> --}}
 										<a class="dropdown-item" href="#" data-toggle="modal"
 										data-target="#danger-header-modal-{{$data->id}}">Hapus</a>
 									</div>
+									@endif
 								</td>
 							</tr>
 							<!-- Danger Header Modal -->
@@ -64,7 +66,7 @@
 											<div class="modal-footer">
 												<button type="button" class="btn btn-light"
 												data-dismiss="modal">Batal</button>
-												<button type="submit" class="btn btn-danger">Hapus</button>
+												<button type="submit" class="btn btn-danger" onclick="this.disabled=true;this.form.submit();">Hapus</button>
 											</div>
 										</form>
 									</div><!-- /.modal-content -->

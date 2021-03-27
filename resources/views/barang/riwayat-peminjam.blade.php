@@ -25,6 +25,7 @@
 								<th class="text-primary">Nama Peminjam</th>
 								<th class="text-primary">Status</th>
 								<th class="text-primary">Waktu Diperbarui</th>
+								<th class="text-primary">Aksi</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -49,6 +50,11 @@
 									@endif
 								</td>
 								<td>{{$data->updated_at}}</td>
+								<td>
+									@if($data->status != 5)
+									<a href="{{url('/cetak-bukti/'.$data->id)}}" class="btn btn-success text-white">Cetak Bukti</a>
+									@endif
+								</td>
 							</tr>
 							@endforeach
 						</tbody>

@@ -147,7 +147,7 @@
 											</div>
 											<div class="modal-footer outer">
 												<button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
-												<button type="submit" class="btn btn-success text-white">Pinjamkan</button>
+												<button type="submit" class="btn btn-success text-white" onclick="this.disabled=true;this.form.submit();">Pinjamkan</button>
 											</div>
 										</form>
 									</div><!-- /.modal-content -->
@@ -169,7 +169,7 @@
 											</div>
 											<div class="modal-footer outer">
 												<button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
-												<button type="submit" class="btn btn-danger text-white">Tolak</button>
+												<button type="submit" class="btn btn-danger text-white" onclick="this.disabled=true;this.form.submit();">Tolak</button>
 											</div>
 										</form>
 									</div><!-- /.modal-content -->
@@ -197,12 +197,20 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<form action="{{url('/pdf-riwayat')}}" method="post" target="_blank">
+			<form action="{{url('/pdf-riwayat')}}" method="post" formtarget="_blank">
 				@csrf
 				<div class="modal-body">
 					<div class="form-group">
 						<label for="date-input1">Masukkan Alokasi Tanggal</label>
-						<input type="text" name="datetimes" class="form-control datetimes" />
+						<input type="text" name="datetimes" class="form-control datetimes" required/>
+					</div>
+					<div class="form-group">
+						<label for="date-input1">Jenis Laporan</label>
+						<select name="jenis" class="form-control" required>
+							<option value="" selected>-- Pilih Jenis Laporan --</option>
+							<option value="1">Laporan Barang Masuk</option>
+							<option value="2">Laporan Peminjaman Barang</option>
+						</select>
 					</div>
 				</div>
 				<div class="modal-footer">

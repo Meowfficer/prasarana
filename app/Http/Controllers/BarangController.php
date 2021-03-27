@@ -153,6 +153,12 @@ class BarangController extends Controller
     public function destroy($id)
     {
         $data = Barang::find($id);
+        $cek = stok_barang::where('kode_barang', $data->kode_barang)->count();
+
+        if ($data->jml_barang != 0 && $cek > 0) {
+            return redirect()->back()->with('danger', 'Data Tidak Bisa Dihapus Jika Masih Tersedia Stok!');
+        }
+
         Barang::destroy($id);
 
         return redirect()->back()->with('danger', 'Data Telah Terhapus!');
@@ -165,7 +171,8 @@ class BarangController extends Controller
         $data = DB::table('barang_masuks')
         ->join('suppliers', 'suppliers.id' ,'=', 'barang_masuks.id_supplier')
         ->join('barangs', 'barangs.kode_barang', '=', 'barang_masuks.kode_barang')
-        ->select('barang_masuks.*', 'suppliers.nama', 'barangs.nama_barang')
+        ->join('stok_barangs', 'barang_masuks.seri_barang', '=', 'stok_barangs.seri_barang')
+        ->select('barang_masuks.*', 'suppliers.nama', 'barangs.nama_barang', 'stok_barangs.status')
         ->orderBy('id', 'desc')
         ->get();
         // $data = BarangMasuk::all();
@@ -294,10 +301,18 @@ class BarangController extends Controller
             DB::table('barangs')->where('kode_barang', $data_masuk_lama->kode_barang)->update(['jml_barang' => $stok_baru]);
         }
 
-        //Hapus Stok Barang
-        $stok_barang = stok_barang::where('seri_barang', $data_masuk_lama->seri_barang)->delete();
+        // DB::table('stok_barangs')
+        // ->where('seri_barang', $data_masuk_lama->seri_barang)
+        // ->delete();
+
+        // if ($stok_barang->status != 1) {
+        //     return redirect('barang-masuk')->with('danger', 'Tidak Dapat Barang Yang Sedang Tidak Tersedia / Dipinjam');
+        // }
+
+        // dd($stok_barang);
 
         BarangMasuk::destroy($id);
+
 
         return redirect('barang-masuk')->with('danger', 'Data Telah Terhapus!');
     }

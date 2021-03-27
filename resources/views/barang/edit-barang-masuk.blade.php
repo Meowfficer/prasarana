@@ -10,8 +10,8 @@
 					@csrf
 					<div class="form-group">
 						<label for="">Nama Barang</label>
-						<select name="kode" class="form-control">
-							<option value="{{$data->kode_barang}}" selected readonly>{{$data->nama_barang}}</option>
+						<select name="kode" class="form-control" readonly>
+							<option value="{{$data->kode_barang}}" selected>{{$data->nama_barang}}</option>
 						</select>
 					</div>
 					{{-- <div class="form-group">
@@ -29,7 +29,7 @@
 					</div>
 				</div>
 				<div class="card-footer">
-					<button type="submit" class="btn btn-info">Edit</button>
+					<button type="submit" class="btn btn-info" onclick="this.disabled=true;this.form.submit();">Edit</button>
 					<a href="{{url('/barang-masuk')}}" class="btn btn-secondary">Kembali</a>
 				</div>
 			</form>

@@ -69,7 +69,7 @@
 											</div>
 											<div class="modal-footer outer">
 												<button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
-												<button type="submit" class="btn btn-success text-white">Pinjamkan</button>
+												<button type="submit" class="btn btn-success text-white" onclick="this.disabled=true;this.form.submit();">Pinjamkan</button>
 											</div>
 										</form>
 									</div><!-- /.modal-content -->
@@ -91,7 +91,7 @@
 											</div>
 											<div class="modal-footer outer">
 												<button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
-												<button type="submit" class="btn btn-danger text-white">Tolak</button>
+												<button type="submit" class="btn btn-danger text-white" onclick="this.disabled=true;this.form.submit();">Tolak</button>
 											</div>
 										</form>
 									</div><!-- /.modal-content -->

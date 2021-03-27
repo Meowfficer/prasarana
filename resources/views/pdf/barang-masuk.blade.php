@@ -106,7 +106,7 @@
 
     table td {
       padding: 20px;
-      text-align: center;
+      text-align: right;
     }
 
     table td.service,
@@ -143,34 +143,41 @@
 </head>
 <body>
   <header class="clearfix">
-    <h1>Bukti Peminjaman Barang</h1>
+    <h1>Laporan Peminjaman Barang</h1>
     <div id="project">
-      <div><p>Tanggal Meminjam : {{$data->created_at}}</p></div>
-      <div><p>Nama Meminjam : {{Auth::user()->name}}</p></div>
+      <div><span>Pembuat Laporan :</span> {{Auth::user()->name}}</div>
+      <div><span>Rentan Waktu :</span> {{$dariIND}} ~ {{$sampaiIND}}</div>
+      <div><span>Tanggal Dibuat :</span> {{$today}}</div>
     </div>
   </header>
   <main>
     <table>
       <thead>
         <tr>
+          <th>#</th>
           <th>Kode Barang</th>
           <th>Seri Barang</th>
           <th>Nama Barang</th>
-          <th>Alasan Meminjam</th>
+          <th>Tanggal Masuk</th>
+          <th>Nama Supplier</th>
         </tr>
       </thead>
       <tbody>
+        @foreach($data as $data)
         <tr>
+          <td>{{$loop->iteration}}</td>
           <td>{{$data->kode_barang}}</td>
           <td>{{$data->seri_barang}}</td>
-          <td>{{$barang[0]->nama_barang}}</td>
-          <td>{{$data->deskripsi}}</td>
+          <td>{{$data->nama_barang}}</td>
+          <td>{{\Carbon\Carbon::parse($data->created_at)->locale('id_ID')->isoFormat('D MMMM Y')}}</td>
+          <td>{{$data->nama}}</td>
         </tr>
+        @endforeach
       </tbody>
     </table>
     <div id="notices">
       <div>Informasi:</div>
-      <div class="notice">Bukti ini wajib dibawa untuk meminjam/mengembalikan barang.</div>
+      <div class="notice">Data di atas merupakan data barang masuk.</div>
     </div>
   </main>
 </body>

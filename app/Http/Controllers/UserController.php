@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\User;
+use App\PinjamBarang;
 use DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -14,8 +15,9 @@ class UserController extends Controller
     	$data = DB::table('users')
     	->where('name', '!=', Auth::user()->name)
     	->get();
-    	// dd($data);
-    	return view('user.account', compact('data'));
+
+        $cek = PinjamBarang::all();
+        return view('user.account', compact('data', 'cek'));
     }
 
     public function create()
@@ -43,10 +45,11 @@ class UserController extends Controller
     	$data->username = strtolower($request->username);
     	$data->password = Hash::make($request->password);
     	$data->role = 2;
+        $data->status = 1;
 
-    	$data->save();
+        $data->save();
 
-    	return redirect('account')->with('success', 'Akun Berhasil Ditambahkan!');
+        return redirect('account')->with('success', 'Akun Berhasil Ditambahkan!');
     }
 
     public function edit($id)
@@ -84,34 +87,35 @@ class UserController extends Controller
         $data->name = $request->nama;
         $data->username = strtolower($request->username);
     }
+}
 
-    public function update(Request $request, $id)
+public function update(Request $request, $id)
+{
+    $data = User::find($id);
+    if($request->username == $data->username)
     {
-        $data = User::find($id);
-        if($request->username == $data->username)
-        {
-           $request->validate([
-            'nama' => 'required'
-        ],[
-            'nama.required' => 'Nama Tidak Boleh Kosong!',
-        ]);
-           $data->name = $request->nama;
-       }else{
-        $request->validate([
-            'username' => 'required|unique:users',
-            'nama' => 'required'
-        ],[
-            'nama.required' => 'Nama Tidak Boleh Kosong!',
-            'username.required' => 'Username Tidak Boleh Kosong!',
-            'username.unique' => 'Username Sudah Terpakai! Harap Coba Yang Lain'
-        ]);
-        $data->name = $request->nama;
-        $data->username = strtolower($request->username);
-    }
+       $request->validate([
+        'nama' => 'required'
+    ],[
+        'nama.required' => 'Nama Tidak Boleh Kosong!',
+    ]);
+       $data->name = $request->nama;
+   }else{
+    $request->validate([
+        'username' => 'required|unique:users',
+        'nama' => 'required'
+    ],[
+        'nama.required' => 'Nama Tidak Boleh Kosong!',
+        'username.required' => 'Username Tidak Boleh Kosong!',
+        'username.unique' => 'Username Sudah Terpakai! Harap Coba Yang Lain'
+    ]);
+    $data->name = $request->nama;
+    $data->username = strtolower($request->username);
+}
 
-    $data->save();
+$data->save();
 
-    return redirect('account')->with('success', 'Akun Berhasil Diedit!');
+return redirect('account')->with('success', 'Akun Berhasil Diedit!');
 }
 
 public function destroy($id)
@@ -153,5 +157,17 @@ public function updatePass(Request $request)
 
     return redirect('change-password')->with('success', 'Password Berhasil Diubah');
 
+}
+
+public function ban($id)
+{
+    DB::table('users')->where('id', $id)->update(['status_akun' => 0]);
+    return redirect('account')->with('danger', 'Akun Berhasil Dinonaktifkan!');
+}
+
+public function unban($id)
+{
+    DB::table('users')->where('id', $id)->update(['status_akun' => 1]);
+    return redirect('account')->with('success', 'Akun Berhasil Diaktifkan!');
 }
 }

@@ -18,6 +18,12 @@
 						</select>
 						@error('kode')<div class="invalid-feedback">{{$message}}</div>@enderror
 					</div>
+					@if($data_kode->count() == null || $data_kode->count() == 0)
+					<div class="form-group">
+						<label for="">Tidak Ada Barang?</label>
+						<a href="{{url('/barang')}}">Tambah Data Barang</a>
+					</div>
+					@endif
 					<div class="form-group">
 						<label for="">Jumlah Barang</label>
 						<input type="number" class="form-control @error('jumlah_barang') is-invalid @enderror" id="jumlah" placeholder="Masukkan Jumlah Barang..." min="1" name="jumlah_barang">
@@ -33,9 +39,15 @@
 						</select>
 						@error('supplier')<div class="invalid-feedback">{{$message}}</div>@enderror
 					</div>
+					@if($data->count() == null || $data->count() == 0)
+					<div class="form-group">
+						<label for="">Tidak Ada Supplier?</label>
+						<a href="{{url('/supplier')}}">Tambah Data Supplier</a>
+					</div>
+					@endif
 				</div>
 				<div class="card-footer">
-					<button type="submit" class="btn btn-info">Tambah</button>
+					<button type="submit" class="btn btn-info" onclick="this.disabled=true;this.form.submit();">Tambah</button>
 					<a href="{{url('/barang-masuk')}}" class="btn btn-secondary">Kembali</a>
 				</div>
 			</form>

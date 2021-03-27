@@ -63,7 +63,7 @@
 				</div>
 				<div class="card-footer">
 					<a href="{{url('/supplier')}}" class="btn btn-secondary">Kembali</a>
-					<button type="submit" class="btn btn-success">Tambahkan</button>
+					<button type="submit" class="btn btn-success text-white" onclick="this.disabled=true;this.form.submit();">Tambahkan</button>
 				</div>
 			</form>
 		</div>

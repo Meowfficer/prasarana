@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 use App\Supplier;
+use App\BarangMasuk;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
     public function index()
     {
+        $cek = BarangMasuk::all();
     	$data = Supplier::all();
-    	return view('user.supplier', compact('data'));
+    	return view('user.supplier', compact('data', 'cek'));
     }
 
     public function create()
