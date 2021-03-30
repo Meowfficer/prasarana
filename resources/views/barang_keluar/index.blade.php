@@ -16,10 +16,10 @@
 							<tr>
 								<th class="text-primary">#</th>
 								<th class="text-primary">Kode Barang</th>
-								<th class="text-primary">Nama Peminjam</th>
+								<th class="text-primary">Seri Barang</th>
 								<th class="text-primary">Nama Barang</th>
-								<th class="text-primary">Jumlah</th>
-								<th class="text-primary">Keterangan</th>
+								<th class="text-primary">Tanggal Keluar</th>
+								<th class="text-primary">Deskripsi</th>
 								<th class="text-primary">Aksi</th>
 							</tr>
 						</thead>
@@ -28,26 +28,18 @@
 							<tr>
 								<td>{{$loop->iteration}}</td>
 								<td>{{$data->kode_barang}}</td>
-								<td>
-									@if($data->role == 1)
-									Administrator
-									@else
-									{{$data->nama_peminjam}}
-									@endif
-								</td>
+								<td>{{$data->seri_barang}}</td>
 								<td>{{$data->nama_barang}}</td>
-								<td>{{$data->jml_barang}}</td>
+								<td>{{\Carbon\Carbon::parse($data->created_at)->locale('id_ID')->isoFormat('D MMMM Y')}}</td>
 								<td>{{$data->deskripsi}}</td>
 								<td>
-									@if($data->deskripsi == 'Diperbaiki')
 									<button class="btn btn-outline-secondary btn-rounded w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="Dropright" aria-expanded="true">
 										{{-- <i class="fe fe-more-horizontal"></i> --}}
 									</button>
 									<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 										<a class="dropdown-item" href="#" data-toggle="modal"
-                                        data-target="#danger-header-modal-{{$data->id}}">Konfirmasi</a>
+                                        data-target="#danger-header-modal-{{$data->id}}">Hapus</a>
 									</div>
-									@endif
 								</td>
 							</tr>
 							<!--Modal Section-->
@@ -66,12 +58,13 @@
                                                     aria-hidden="true">×</button>
                                             </div>
                                             <div class="modal-body">
-                                                <h5 class="mt-0">Apakah Barang Sudah Selesai Diperbaiki? Jika Sudah Silahkan Klik Konfirmasi</h5>
+                                                <h5 class="mt-0">Apakah Kau Yakin Ingin Menghapus Data?
+                                                </h5>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-light"
                                                     data-dismiss="modal">Batal</button>
-                                                <button type="submit" class="btn btn-warning">Konfirmasi</button>
+                                                <button type="submit" class="btn btn-warning">Hapus</button>
                                             </div>
                                         </form>
                                         </div><!-- /.modal-content -->

@@ -19,8 +19,7 @@ class BarangKeluarController extends Controller
     {
         $data = DB::table('barang_keluars')
         ->join('barangs', 'barangs.kode_barang', '=', 'barang_keluars.kode_barang')
-        ->join('users', 'users.id', '=', 'barang_keluars.id_peminjam')
-        ->select('barang_keluars.*', 'barangs.nama_barang', 'users.name AS nama_peminjam', 'users.role')
+        ->select('barang_keluars.*', 'barangs.nama_barang')
         ->get();
         return view('barang_keluar.index', compact('data'));
     }
@@ -50,25 +49,28 @@ class BarangKeluarController extends Controller
             return redirect('tambah-barang-keluar')->with('danger', 'Harap Pilih Nama Barang');
         }
 
-        $data_stock = Barang::where('kode_barang', '=', $request->kode)
-        ->select('jml_barang')
-        ->first();
-        $max = $data_stock->jml_barang;
+        if ($request->seri == NULL) {
+            return redirect('tambah-barang-keluar')->with('danger', 'Harap Pilih Seri Barang');
+        }
+
+        // $data_stock = Barang::where('kode_barang', '=', $request->kode)
+        // ->select('jml_barang')
+        // ->first();
+        // $max = $data_stock->jml_barang;
         // dd($max);
 
-        if ($request->jumlah_barang > $max) {
-            return redirect('tambah-barang-keluar')->with('danger', 'Batas Maksimal Barang Terlampaui, Batas Maksimal Adalah '.$max);
-        }
+        // if ($request->jumlah_barang > $max) {
+        //     return redirect('tambah-barang-keluar')->with('danger', 'Batas Maksimal Barang Terlampaui, Batas Maksimal Adalah '.$max);
+        // }
 
         $request->validate([
             'kode' => "required",
-            'jumlah_barang' => "required|min:1",
+            'seri' => "required",
             'deskripsi' => "required",
         ],[
             'kode.required' => "Harap Pilih Nama Barang",
-            'jumlah_barang.required' => 'Harap Masukkan Jumlah Barang',
-            'jumlah_barang.min' => 'Harap Masukkan Jumlah Barang Minimal 1',
-            'deskripsi.required' => 'Harap Pilih Deskripsi Barang Keluar'
+            'seri.required' => 'Harap Pilih Seri Barang',
+            'deskripsi.required' => 'Harap Masukkan Deskripsi Barang Keluar'
         ]);
 
 
@@ -80,14 +82,15 @@ class BarangKeluarController extends Controller
         ->first();
         
         //Proses Simpan Stok Barang
-        $stok_baru = $stok->jml_barang - $request->jumlah_barang;
+        $stok_baru = $stok->jml_barang - 1;
 
-        $data->id_peminjam = Auth::id();
         $data->deskripsi = $request->deskripsi;
         $data->kode_barang = $request->kode;
-        $data->jml_barang = $request->jumlah_barang;
+        $data->seri_barang = $request->seri;
         $data->save();
         DB::table('barangs')->where('kode_barang', $tanda_stok)->update(['jml_barang' => $stok_baru]);
+
+        DB::table('stok_barangs')->where('seri_barang', $request->seri)->delete();
 
         return redirect('barang-keluar')->with('success', 'Berhasil Tambah Data!');
     }
@@ -134,18 +137,18 @@ class BarangKeluarController extends Controller
      */
     public function destroy($id)
     {
-        $data_masuk_lama = DB::table('barang_keluars')
-        ->where('id', $id)
-        ->first();
+        // $data_masuk_lama = DB::table('barang_keluars')
+        // ->where('id', $id)
+        // ->first();
 
-        //Pengambilan Jumlah Stok Lama
-        $stok = DB::table('barangs')
-        ->where('kode_barang', $data_masuk_lama->kode_barang)
-        ->first();
+        // //Pengambilan Jumlah Stok Lama
+        // $stok = DB::table('barangs')
+        // ->where('kode_barang', $data_masuk_lama->kode_barang)
+        // ->first();
 
-        //Proses Simpan Stok Barang
-        $stok_baru = $stok->jml_barang + $data_masuk_lama->jml_barang;
-        DB::table('barangs')->where('kode_barang', $data_masuk_lama->kode_barang)->update(['jml_barang' => $stok_baru]);
+        // //Proses Simpan Stok Barang
+        // $stok_baru = $stok->jml_barang + $data_masuk_lama->jml_barang;
+        // DB::table('barangs')->where('kode_barang', $data_masuk_lama->kode_barang)->update(['jml_barang' => $stok_baru]);
         BarangKeluar::destroy($id);
 
         return redirect('barang-keluar')->with('success', 'Barang Berhasil Ditambahkan!');

@@ -222,7 +222,8 @@
         }
       });
     }
-    var start = moment().subtract(29, 'days');
+    // var start = moment().subtract(29, 'days');
+    var start = moment().subtract();
     var end = moment();
 
     function cb(start, end)

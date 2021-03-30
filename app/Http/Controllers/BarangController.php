@@ -8,6 +8,7 @@ use App\stok_barang;
 use App\BarangKeluar;
 use App\PinjamBarang;
 use App\Supplier;
+use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
@@ -111,6 +112,7 @@ class BarangController extends Controller
     public function update(Request $request, $id)
     {
         $data = Barang::find($id);
+        $kode = $data->kode_barang;
 
         $request->validate([
             'nama' => 'required',
@@ -136,8 +138,14 @@ class BarangController extends Controller
            $data->jenis_barang = $request->jenis;
            $data->kategori_barang = $request->kategori;
            $data->kode_barang = $kode_barang_all;
+           // DB::raw("UPDATE barang_masuks SET seri_barang = REPLACE(seri_barang, $kode, $kode_barang_all)"); 
 
            $data->save();
+
+           ///Perubahan Seri Barang Pada Tabel Lain
+           // DB::table('barang_masuks')
+           // ->update(["seri_barang" => DB::raw("REPLACE('seri_barang',  $kode, $kode_barang_all)")]);
+
            return redirect('barang')->with('info', 'Data Berhasil Diubah!');
        }
 
@@ -153,11 +161,11 @@ class BarangController extends Controller
     public function destroy($id)
     {
         $data = Barang::find($id);
-        $cek = stok_barang::where('kode_barang', $data->kode_barang)->count();
+        // $cek = stok_barang::where('kode_barang', $data->kode_barang)->count();
 
-        if ($data->jml_barang != 0 && $cek > 0) {
-            return redirect()->back()->with('danger', 'Data Tidak Bisa Dihapus Jika Masih Tersedia Stok!');
-        }
+        // if ($data->jml_barang != 0 && $cek > 0) {
+        //     return redirect()->back()->with('danger', 'Data Tidak Bisa Dihapus Jika Masih Tersedia Stok!');
+        // }
 
         Barang::destroy($id);
 
@@ -208,11 +216,12 @@ class BarangController extends Controller
 
         for ($i=1; $i <= $request->jumlah_barang ; $i++) { 
             $rand = mt_rand(0, 100);
+            $random_string = Str::random(3);
             //Input Data Barang Masuk
             $data_masuk = new BarangMasuk;
 
             $data_masuk->kode_barang = $request->kode;
-            $data_masuk->seri_barang = $request->kode . '-' . $rand;
+            $data_masuk->seri_barang = strtoupper($random_string.$rand);
             $data_masuk->jumlah_masuk = 1;
             $data_masuk->id_supplier = $request->supplier;
             $data_masuk->save();
@@ -221,7 +230,7 @@ class BarangController extends Controller
             $stok_barang = new stok_barang;
 
             $stok_barang->kode_barang = $request->kode;
-            $stok_barang->seri_barang = $request->kode . '-' . $rand;
+            $stok_barang->seri_barang = strtoupper($random_string.$rand);
             $stok_barang->status = 1;
             $stok_barang->save();
         }

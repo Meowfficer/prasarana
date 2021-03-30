@@ -7,7 +7,6 @@
 		/*background: #33cc99;*/
 		color:#1b67ff;
 		font-family: 'Open Sans', sans-serif;
-		max-height:700px;
 		overflow: hidden;
 	}
 	.c{

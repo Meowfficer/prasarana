@@ -49,9 +49,14 @@
 								<td><h3><span class="btn btn-warning text-white">Dipinjam</span></h3></td>
 								<td>{{$data->created_at}}</td>
 								<td>
-									<button class="btn btn-outline-secondary btn-rounded" type="button" data-toggle="modal" data-target="#modal-pinjam-{{$data->id}}">
-										{{-- <i class="fas fa-hand-holding fa-2x"></i> --}}Kembalikan
+									<button class="btn btn-outline-secondary btn-rounded w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="Dropright" aria-expanded="true">
+										{{-- <i class="fe fe-more-horizontal"></i> --}}
 									</button>
+									<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+										<a class="dropdown-item" href="{{url('/cetak-bukti/'.$data->id)}}">Cetak Bukti</a>
+										<a class="dropdown-item" href="#" data-toggle="modal"
+										data-target="#modal-pinjam-{{$data->id}}">Kembalikan</a>
+									</div>
 								</td>
 							</tr>
 							<!--Modal Section-->
@@ -73,7 +78,7 @@
 												{{-- <div class="form-group">
 													<input type="checkbox" id="checkbox-{{$data->id}}">
 												</div> --}}
-												<div class="custom-control custom-switch">
+												{{-- <div class="custom-control custom-switch">
 													<input type="checkbox" class="custom-control-input" id="customSwitch{{$data->id}}">
 													<label class="custom-control-label text-dark" for="customSwitch{{$data->id}}">Ada Barang Yang Rusak?</label>
 												</div>
@@ -82,7 +87,7 @@
 														<input type="number" min="1" max="{{$data->jml_barang}}" class="form-control" name="rusak" placeholder="Masukkan Jumlah Barang Yang Rusak...">
 														<label class="form-text text-dark">Maks : {{$data->jml_barang}}</label>
 													</div>
-												</div>
+												</div> --}}
 											</div>
 											<div class="modal-footer outer">
 												<button type="submit" class="btn btn-danger" onclick="this.disabled=true;this.form.submit();">Kembalikan</button>
@@ -93,7 +98,7 @@
 							</div><!-- /.modal -->
 							<!--End of Modal Pinjam Barang-->
 							<!--End of Modal Section-->
-							<script>
+							{{-- <script>
 								document.getElementById('customSwitch{{$data->id}}').onclick = function() {
 									console.log(this);
 									if(this.checked) {
@@ -102,7 +107,7 @@
 										document.getElementById('delivery-{{$data->id}}').style['display'] = 'none';
 									}
 								};
-							</script>
+							</script> --}}
 							@endforeach
 						</tbody>
 					</table>

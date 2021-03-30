@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('login', 'LoginController@index')->name('login');
 Route::post('/login', 'LoginController@login');
+Route::get('/logout', 'LoginController@logout');
 // Route::get('/register', 'LoginController@register');
 // Route::post('/register', 'LoginController@store');
-Route::get('/logout', 'LoginController@logout');
 
 // Route::any('{catchall}', 'PagesController@notfound')->where('catchall', '.*');
 Route::fallback(function () {
@@ -27,7 +27,7 @@ Route::fallback(function () {
 
 Route::group(['middleware' => 'auth'], function() {
 	
-	//Supplier
+	//Dashboard
 	Route::get('/', 'PagesController@index');
 
 	//Cetak Butki
@@ -57,6 +57,7 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('/user/edit/', 'UserController@input');
 
 	Route::group(['middleware' => ['admin']], function(){
+
 
 		//Ban Unban User
 		Route::post('/account/ban/{id}', 'UserController@ban');
@@ -125,9 +126,12 @@ Route::group(['middleware' => 'auth'], function() {
 		Route::get('/count-data-bread', 'AjaxController@hitung_peminjam');
 		Route::get('/count-data-kembali', 'AjaxController@hitung_pengembalian');
 		Route::get('/count-data-total', 'AjaxController@hitung_total');
-		// Route::get('/count-data', function(){
-		// 	return DB::table('pinjam_barangs')->where('status', 1)->count();
-		// });
+		Route::get('/test', function(){
+			return view('layouts.layout');
+		});
+
+	//Dynamic Dropdown Barang Keluar
+		Route::post('/seri', 'AjaxController@seri');
 
 	});
 

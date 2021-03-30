@@ -8,7 +8,7 @@
 			<div class="card-body">
 				<h4 class="card-title">Data Barang Masuk</h4>
 				<div class="card-tool mb-3 row mx-1">
-					<a href="{{url('/add-barang-masuk')}}" class="btn btn-success col-2 text-white">Tambah Data</a>
+					<a href="{{url('/add-barang-masuk')}}" class="btn btn-success col-lg-2 col-6 text-white">Tambah Data</a>
 					{{-- <a href="{{url('/peminjam-barang/export_excel')}}" class="btn btn-success col-1 ml-auto text-white">Laporan</a> --}}
 				</div>
 				<div class="table-responsive">

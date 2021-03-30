@@ -28,11 +28,14 @@ class PdfController extends Controller
 			$data = DB::table('barang_masuks')
 			->join('suppliers', 'suppliers.id' ,'=', 'barang_masuks.id_supplier')
 			->join('barangs', 'barangs.kode_barang', '=', 'barang_masuks.kode_barang')
-			->join('stok_barangs', 'barang_masuks.seri_barang', '=', 'stok_barangs.seri_barang')
-			->select('barang_masuks.*', 'suppliers.nama', 'barangs.nama_barang', 'stok_barangs.status')
-			->whereBetween('pinjam_barangs.created_at', [$dari, $sampai])
+			// ->join('stok_barangs', 'barang_masuks.seri_barang', '=', 'stok_barangs.seri_barang')
+			->select('barang_masuks.*', 'suppliers.nama', 'barangs.nama_barang')
+			->whereBetween('barang_masuks.created_at', [$dari, $sampai])
 			->orderBy('id', 'desc')
 			->get();
+			if ($data->count() == 0 || $data->count() == null) {
+				return redirect('/')->with('info', 'Tidak ada data peminjaman barang!');
+			}
 			$dariIND = Carbon::parse($dari)->locale('id_ID')->isoFormat('D MMMM Y');
 			$sampaiIND = Carbon::parse($sampai)->locale('id_ID')->isoFormat('D MMMM Y');
 
@@ -53,6 +56,10 @@ class PdfController extends Controller
 			->whereBetween('pinjam_barangs.created_at', [$dari, $sampai])
 			->orderBy('id', 'desc')
 			->get();
+
+			if ($data->count() == 0 || $data->count() == null) {
+				return redirect('/')->with('info', 'Tidak ada data peminjaman barang!');
+			}
 			
 			$dariIND = Carbon::parse($dari)->locale('id_ID')->isoFormat('D MMMM Y');
 			$sampaiIND = Carbon::parse($sampai)->locale('id_ID')->isoFormat('D MMMM Y');

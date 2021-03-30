@@ -8,7 +8,7 @@
 			<div class="card-body">
 				<h4 class="card-title">Data Barang</h4>
 				<div class="card-tool mb-3">
-					<a href="{{url('/tambah-barang')}}" class="btn btn-success text-white">Tambah Data</a>
+					<a href="{{url('/tambah-barang')}}" class="btn btn-success col-lg-2 col-6 text-white">Tambah Data</a>
 				</div>
 				<div class="table-responsive">
 					<table id="dataTable" class="table datatables">
@@ -46,17 +46,19 @@
 								</td>
 								<td>{{$data->kategori_barang}}</td>
 								<td>
-									@if($data->jml_barang != null || $data->jml_barang != 0)
 									<button class="btn btn-outline-secondary btn-rounded w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="Dropright" aria-expanded="true">
 										{{-- <i class="fe fe-more-horizontal"></i> --}}
 									</button>
 									<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+										@if($data->jml_barang == null || $data->jml_barang == 0)
+										<a class="dropdown-item" href="{{url('add-barang-masuk/')}}">Tambah Stok</a>
+										@else
 										<a class="dropdown-item" href="{{url('stok-barang/'.$data->kode_barang)}}">Lihat Stok</a>
+										@endif
 										<a class="dropdown-item" href="{{url('barang/edit/'.$data->id)}}">Edit</a>
 										<a class="dropdown-item" href="#" data-toggle="modal"
 										data-target="#danger-header-modal-{{$data->id}}">Hapus</a>
 									</div>
-									@endif
 								</td>
 							</tr>
 							<!--Modal Section-->

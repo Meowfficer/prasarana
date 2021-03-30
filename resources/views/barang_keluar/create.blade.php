@@ -10,7 +10,7 @@
 					@csrf
 					<div class="form-group">
 						<label for="">Nama Barang</label>
-						<select name="kode" class="form-control @error('kode') is-invalid @enderror">
+						<select name="kode" class="form-control @error('kode') is-invalid @enderror" id="kode_barang">
 							<option value="" selected disabled>--- Pilih Nama Barang ---</option>
 							@foreach ($data_kode as $kode_barang => $ns)
 							<option value="{{ $kode_barang }}">{{ $ns }}</option>
@@ -19,26 +19,46 @@
 						@error('kode')<div class="invalid-feedback">{{$message}}</div>@enderror
 					</div>
 					<div class="form-group">
-						<label for="">Jumlah Barang</label>
-						<input type="number" class="form-control @error('jumlah_barang') is-invalid @enderror" id="jumlah" placeholder="Masukkan Jumlah Barang..." min="1" name="jumlah_barang">
-						@error('jumlah_barang')<div class="invalid-feedback">{{$message}}</div>@enderror
+						<label for="">Seri Barang</label>
+						<select name="seri" class="form-control @error('seri') is-invalid @enderror" id="seri">
+							<option value="" selected disabled>--- Pilih Seri Barang ---</option>
+						</select>
+						@error('seri')<div class="invalid-feedback">{{$message}}</div>@enderror
 					</div>
 					<div class="form-group">
 						<label for="">Deskripsi</label>
-						<select name="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror">
-							<option value="" selected disabled>--- Pilih Alasan Barang Keluar ---</option>
-							<option value="Diperbaiki">Diperbaiki</option>
-							<option value="Rusak">Rusak</option>
-						</select>
+						<input type="text" class="form-control @error('deskripsi') is-invalid @enderror" name="deskripsi">
 						@error('deskripsi')<div class="invalid-feedback">{{$message}}</div>@enderror
 					</div>
 				</div>
 				<div class="card-footer">
-					<button type="submit" class="btn btn-info">Tambah</button>
+					<button type="submit" class="btn btn-info" onclick="this.disabled=true;this.form.submit();">Tambah</button>
 					<a href="{{url('/barang-keluar')}}" class="btn btn-secondary">Kembali</a>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#kode_barang').on('change',function(e) {
+			var kode_barang = e.target.value;
+			$.ajax({
+				url:"{{ url('/seri') }}",
+				type:"POST",
+				data: {
+					"_token": "{{ csrf_token() }}",
+					kode_barang: kode_barang
+				},
+				success:function (data) {
+					$('#seri').empty();
+					$.each(data.seri,function(index,seri){
+						$('#seri').append('<option value="'+seri.seri_barang+'">'+seri.seri_barang+'</option>');
+					})
+				}
+			})
+		});
+	});
+</script>
 @endsection
